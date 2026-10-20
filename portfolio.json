@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "prism-lab-alan-vo",
+  "owner": "ALANDVO",
+  "email": "alanvo@gmail.com",
+  "domain": "AI/ML developer tools",
+  "summary": "Work in progress: prism-lab-alan-vo",
+  "workflows": [
+    "Upload video and create restoration job with configurable presets and AI models",
+    "Monitor job progress with pause/resume capability and frame-level checkpointing",
+    "Export restored video with preserved source color metadata (primaries, transfer, matrix, range, chroma location)"
+  ],
+  "auth": "oidc-keycloak-saml-broker",
+  "llm_providers": [
+    "openai-compatible",
+    "anthropic",
+    "gemini",
+    "ollama"
+  ],
+  "status": "work-in-progress"
+}

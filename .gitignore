@@ -1,0 +1,51 @@
+# Dependencies
+.venv
+venv
+node_modules
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Build outputs
+dist
+build
+*.egg-info
+*.tsbuildinfo
+.vite
+
+# Environment
+.env
+.env.*
+*.db
+*.sqlite
+data/
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+coverage
+htmlcov
+.coverage
+
+# Agent metadata
+.antigravitycli
+.omp
+
+# Test artifacts
+.pytest_cache
+.coverage
