@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prism-lab-alan-vo"
+version = "1.0.0"
+description = "Video restoration tool with AI/ML-powered quality enhancement"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Alan Vo", email = "alanvo@gmail.com"}
+]
+maintainers = [
+    {name = "Alan Vo", email = "alanvo@gmail.com"}
+]
+keywords = ["video", "restoration", "ai", "ml", "color-correction"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.115.0",
+    "uvicorn[standard]==0.30.6",
+    "pydantic==2.9.2",
+    "pydantic-settings==2.5.2",
+    "sqlalchemy==2.0.34",
+    "alembic==1.13.1",
+    "aiosqlite==0.20.0",
+    "python-jose[cryptography]==3.3.0",
+    "passlib[bcrypt]==1.7.4",
+    "python-multipart==0.0.18",
+    "python-dotenv==1.0.1",
+    "httpx==0.27.2",
+    "fakeredis==2.21.1",
+    "redis==5.1.0",
+    "pyyaml==6.0.1",
+    "structlog==24.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.3",
+    "pytest-asyncio==0.23.8",
+    "httpx==0.27.2",
+    "ruff==0.5.0",
+    "mypy==1.10.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend"]
+asyncio_mode = "auto"
+testpaths = ["backend/tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = ["E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+exclude = [".venv", "node_modules", "dist", "build"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+exclude = [".venv", "node_modules", "dist", "build"]

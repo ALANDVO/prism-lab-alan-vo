@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "current_feature": "core-skeleton",
+  "features": [
+    {
+      "id": "core-skeleton",
+      "title": "Core FastAPI/React skeleton with auth and video job API",
+      "status": "done",
+      "acceptance": [
+        "FastAPI app runs with health endpoint",
+        "React frontend builds and loads",
+        "OIDC Keycloak auth configured (backend sessions with HttpOnly cookies)",
+        "Video job CRUD API with SQLite persistence",
+        "Docker compose with backend, frontend, Keycloak, PostgreSQL",
+        "CI workflow runs backend/frontend tests"
+      ],
+      "implementation": [
+        "backend/app/main.py",
+        "backend/app/core/config.py",
+        "backend/app/core/database.py",
+        "backend/app/core/security.py",
+        "backend/app/core/oidc.py",
+        "backend/app/models/__init__.py",
+        "backend/app/api/schemas.py",
+        "backend/app/api/deps.py",
+        "backend/app/api/auth.py",
+        "backend/app/api/jobs.py",
+        "backend/app/services/color_engine.py",
+        "backend/app/services/video_processor.py",
+        "frontend/src/main.tsx",
+        "frontend/src/App.tsx",
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/components/JobTable.tsx",
+        "frontend/src/components/CreateJobModal.tsx",
+        "frontend/src/components/Toast.tsx",
+        "frontend/src/pages/Dashboard.tsx",
+        "frontend/src/pages/Login.tsx",
+        "frontend/src/pages/Settings.tsx",
+        "frontend/src/hooks/useAuth.tsx",
+        "frontend/src/hooks/useJobs.tsx",
+        "frontend/src/api/client.ts",
+        "frontend/src/types/index.ts"
+      ],
+      "tests": [
+        "backend/tests/test_main.py",
+        "frontend/src/test/components.test.tsx"
+      ]
+    },
+    {
+      "id": "color-space-correction",
+      "title": "Color space correction engine for video restoration",
+      "status": "done",
+      "acceptance": [
+        "Detect and preserve source color metadata (primaries, transfer, matrix, range, chroma location)",
+        "Apply correct color conversion during processing/export",
+        "Eliminate green tint from BT.709 misassignment",
+        "Unit tests for color metadata handling"
+      ],
+      "implementation": [
+        "backend/app/services/color_engine.py"
+      ],
+      "tests": [
+        "backend/tests/test_main.py::TestColorEngine"
+      ]
+    },
+    {
+      "id": "pause-resume-jobs",
+      "title": "Pause/resume and skip-completed video jobs",
+      "status": "done",
+      "acceptance": [
+        "Job checkpointing at frame boundaries",
+        "Resume from last completed frame",
+        "Skip already-processed files in queue",
+        "Frontend pause/resume/skip controls"
+      ],
+      "implementation": [
+        "backend/app/services/video_processor.py",
+        "backend/app/api/jobs.py (pause/resume/cancel endpoints)",
+        "frontend/src/components/JobTable.tsx (pause/resume/cancel buttons)"
+      ],
+      "tests": [
+        "backend/tests/test_main.py::TestVideoProcessor",
+        "backend/tests/test_main.py::TestJobs::test_pause_job",
+        "backend/tests/test_main.py::TestJobs::test_resume_job",
+        "backend/tests/test_main.py::TestJobs::test_cancel_job"
+      ]
+    },
+    {
+      "id": "mosaic-grid-artifact-fix",
+      "title": "Fix grid pattern artifact in VR180 mosaic removal",
+      "status": "planned",
+      "acceptance": [
+        "Detect grid artifact in SBS+Fisheye mode",
+        "Apply spatial filtering to suppress grid",
+        "Preserve detail in non-mosaic areas",
+        "Visual regression test with sample frames"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "ltx-protected-inference",
+      "title": "LTX protected inference with fallback",
+      "status": "planned",
+      "acceptance": [
+        "Protected worker loads LTX model safely",
+        "Graceful fallback on protection errors",
+        "Clear error messages for driver/environment issues"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "machine-identity-fallback",
+      "title": "Machine identity derivation with OEM fallback",
+      "status": "planned",
+      "acceptance": [
+        "Primary: SMBIOS UUID + board/BIOS serial",
+        "Fallback: Windows MachineGuid registry",
+        "Warning instead of hard failure on unsafe identity",
+        "License validation works on OEM machines"
+      ],
+      "implementation": [],
+      "tests": []
+    }
+  ]
+}
