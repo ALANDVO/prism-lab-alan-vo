@@ -49,3 +49,4 @@ htmlcov
 # Test artifacts
 .pytest_cache
 .coverage
+venv/

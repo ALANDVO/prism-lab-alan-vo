@@ -124,9 +124,7 @@ class ColorCorrectionEngine:
         # Only set explicit color metadata if source had it
         if source.color_range and source.color_range != "unknown":
             corrected.color_range = source.color_range
-        else:
-            # Default to tv range for YUV
-            corrected.color_range = "tv"
+        # Else leave unset - don't force tv range
 
         if source.color_space and source.color_space != "unknown":
             corrected.color_space = source.color_space
@@ -138,11 +136,10 @@ class ColorCorrectionEngine:
         if source.color_primaries and source.color_primaries != "unknown":
             corrected.color_primaries = source.color_primaries
 
-        # Default chroma_location to center for MPEG-style (most common)
+        # Only set chroma_location if source had explicit value
         if source.chroma_location and source.chroma_location != "unknown":
             corrected.chroma_location = source.chroma_location
-        else:
-            corrected.chroma_location = "center"
+        # Else leave unset - don't force center
 
         return corrected
 
