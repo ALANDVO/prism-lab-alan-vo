@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_feature": "core-skeleton",
+  "current_feature": "mosaic-grid-artifact-fix",
   "features": [
     {
       "id": "core-skeleton",
@@ -88,15 +88,21 @@
     {
       "id": "mosaic-grid-artifact-fix",
       "title": "Fix grid pattern artifact in VR180 mosaic removal",
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": [
         "Detect grid artifact in SBS+Fisheye mode",
         "Apply spatial filtering to suppress grid",
         "Preserve detail in non-mosaic areas",
         "Visual regression test with sample frames"
       ],
-      "implementation": [],
-      "tests": []
+      "implementation": [
+        "backend/app/services/mosaic_filter.py",
+        "backend/app/services/video_processor.py"
+      ],
+      "tests": [
+        "backend/tests/test_mosaic_filter.py",
+        "backend/tests/test_main.py::TestVideoProcessor"
+      ]
     },
     {
       "id": "ltx-protected-inference",

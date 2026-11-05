@@ -11,6 +11,7 @@ from sqlalchemy import select, update
 
 from app.models import VideoJob, JobStatus
 from app.services.color_engine import ColorMetadataExtractor, ColorCorrectionEngine, ColorMetadata
+from app.services.mosaic_filter import MosaicGridFilter, MosaicMode, create_mosaic_filter
 
 
 @dataclass
@@ -32,6 +33,7 @@ class VideoProcessor:
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
         self.color_extractor = ColorMetadataExtractor()
         self.color_engine = ColorCorrectionEngine(self.color_extractor)
+        self.mosaic_filter = None  # Initialized per-job based on mosaic_mode
         self._running_jobs: Dict[int, asyncio.Task] = {}
 
     def _checkpoint_path(self, job_id: int) -> Path:
@@ -94,6 +96,15 @@ class VideoProcessor:
             total_frames = job.total_frames or 1000
             job.total_frames = total_frames
 
+            # Initialize mosaic filter if enabled
+            mosaic_filter = None
+            if job.enable_mosaic_removal and job.mosaic_mode:
+                try:
+                    mode = MosaicMode(job.mosaic_mode)
+                    mosaic_filter = create_mosaic_filter(mode)
+                except ValueError:
+                    mosaic_filter = None
+
             for frame in range(start_frame, total_frames):
                 # Check if job was paused/cancelled
                 await db.refresh(job)
@@ -111,6 +122,14 @@ class VideoProcessor:
                 elif job.status == JobStatus.CANCELLED:
                     return
 
+                # Simulate work (in real implementation, this would process actual frames)
+                # If mosaic filter is enabled, apply grid artifact detection/filtering
+                if mosaic_filter and frame % 30 == 0:  # Periodic grid detection
+                    # In real implementation: frame_data = read_frame(job.input_path, frame)
+                    # filtered_frame, detection = mosaic_filter.process_video_frame(frame_data)
+                    # write_frame(filtered_frame)
+                    pass  # Grid detection would happen here
+                
                 # Simulate work
                 await asyncio.sleep(0.01)
 

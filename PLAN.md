@@ -4,7 +4,7 @@ Each round completes one feature or repair. Future items are planned, not implem
 
 ## Current round
 
-core-skeleton
+mosaic-grid-artifact-fix
 
 ## Roadmap
 
@@ -54,13 +54,17 @@ Tests: `backend/tests/test_main.py::TestVideoProcessor`, `backend/tests/test_mai
 
 ### mosaic-grid-artifact-fix — Fix grid pattern artifact in VR180 mosaic removal
 
-Status: planned
+Status: in_progress
 
 Acceptance:
 - Detect grid artifact in SBS+Fisheye mode
 - Apply spatial filtering to suppress grid
 - Preserve detail in non-mosaic areas
 - Visual regression test with sample frames
+
+Implementation: `backend/app/services/mosaic_filter.py`, `backend/app/services/video_processor.py`
+
+Tests: `backend/tests/test_mosaic_filter.py`, `backend/tests/test_main.py::TestVideoProcessor`
 
 ### ltx-protected-inference — LTX protected inference with fallback
 
