@@ -85,3 +85,6 @@ Acceptance:
 - Warning instead of hard failure on unsafe identity
 - License validation works on OEM machines
 
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)

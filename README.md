@@ -344,3 +344,7 @@ MIT License - Copyright (c) 2024 Alan Vo <alanvo@gmail.com>
 ## Author
 
 **Alan Vo** - alanvo@gmail.com - [GitHub](https://github.com/ALANDVO)
+
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)

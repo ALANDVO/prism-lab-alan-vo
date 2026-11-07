@@ -43,3 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Color space correction engine to prevent green tint artifacts (addresses BT.709 misassignment)
 - Video color metadata preservation from source files
 - Deterministic offline color correction without LLM dependency
+
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)
