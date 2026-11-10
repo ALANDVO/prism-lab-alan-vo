@@ -88,7 +88,7 @@
     {
       "id": "mosaic-grid-artifact-fix",
       "title": "Fix grid pattern artifact in VR180 mosaic removal",
-      "status": "in_progress",
+      "status": "done",
       "acceptance": [
         "Detect grid artifact in SBS+Fisheye mode",
         "Apply spatial filtering to suppress grid",

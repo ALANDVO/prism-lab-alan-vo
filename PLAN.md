@@ -54,7 +54,7 @@ Tests: `backend/tests/test_main.py::TestVideoProcessor`, `backend/tests/test_mai
 
 ### mosaic-grid-artifact-fix — Fix grid pattern artifact in VR180 mosaic removal
 
-Status: in_progress
+Status: done
 
 Acceptance:
 - Detect grid artifact in SBS+Fisheye mode
