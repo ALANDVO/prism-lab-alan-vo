@@ -187,15 +187,30 @@ class MosaicGridFilter:
                 # Check if roughly perpendicular
                 diff = abs(abs(a1 - a2) - np.pi/2)
                 if diff < np.pi/6:  # Within 30 degrees of perpendicular
-                    # Estimate spacing from vector magnitudes
+                    # Estimate spacing from vector positions
+                    # For a grid with spacing S, frequency peaks are at k * N / S
+                    # So fundamental frequency radius = N / S, thus S = N / radius
                     mags1 = [np.sqrt(vy*vy + vx*vx) for vy, vx in vectors 
                             if abs(np.arctan2(vy, vx) - a1) < np.pi/12]
                     mags2 = [np.sqrt(vy*vy + vx*vx) for vy, vx in vectors
                             if abs(np.arctan2(vy, vx) - a2) < np.pi/12]
                     
                     if mags1 and mags2:
-                        spacing_y = int(2 * np.pi / np.median(mags1)) if np.median(mags1) > 0 else None
-                        spacing_x = int(2 * np.pi / np.median(mags2)) if np.median(mags2) > 0 else None
+                        # Determine which axis is which based on angle
+                        # a1 closer to 0 or pi -> horizontal, pi/2 -> vertical
+                        is_a1_horizontal = abs(a1) < np.pi/4 or abs(abs(a1) - np.pi) < np.pi/4
+                        
+                        # Use the MINIMUM radius for fundamental frequency (not median)
+                        # Median picks up harmonics; min gives fundamental spacing
+                        min_r1 = np.min(mags1)
+                        min_r2 = np.min(mags2)
+                        
+                        if is_a1_horizontal:
+                            spacing_x = int(center_x * 2 / min_r1) if min_r1 > 0 else None
+                            spacing_y = int(center_y * 2 / min_r2) if min_r2 > 0 else None
+                        else:
+                            spacing_y = int(center_y * 2 / min_r1) if min_r1 > 0 else None
+                            spacing_x = int(center_x * 2 / min_r2) if min_r2 > 0 else None
                         
                         if spacing_x and spacing_y:
                             score = len(mags1) + len(mags2)
@@ -251,16 +266,16 @@ class MosaicGridFilter:
         sin_o = np.sin(orientation)
         
         # For simplicity, assume axis-aligned grid (most common case)
-        # Vertical grid lines
+        # Vertical grid lines - thin regions (2 pixels wide)
         for x in range(0, w, grid_w):
             regions.append((0, max(0, x-1), h, min(w, x+1)))
         
-        # Horizontal grid lines
+        # Horizontal grid lines - thin regions (2 pixels tall)
         for y in range(0, h, grid_h):
             regions.append((max(0, y-1), 0, min(h, y+1), w))
         
         return regions
-    
+
     def filter_frame(self, frame: np.ndarray, detection: Optional[GridDetectionResult] = None) -> np.ndarray:
         """
         Apply grid artifact suppression to frame.
@@ -281,10 +296,18 @@ class MosaicGridFilter:
         result = frame.copy().astype(np.float32)
         h, w = frame.shape[:2]
         
-        # Create mask for grid regions
+        # Create mask for grid lines only (thin lines, not full spans)
         mask = np.zeros((h, w), dtype=np.float32)
-        for y1, x1, y2, x2 in detection.grid_regions:
-            mask[y1:y2, x1:x2] = 1.0
+        if detection.grid_spacing:
+            grid_w, grid_h = detection.grid_spacing
+            # Vertical grid lines (2 pixels wide)
+            for x in range(0, w, grid_w):
+                x1, x2 = max(0, x-1), min(w, x+1)
+                mask[:, x1:x2] = 1.0
+            # Horizontal grid lines (2 pixels tall)
+            for y in range(0, h, grid_h):
+                y1, y2 = max(0, y-1), min(h, y+1)
+                mask[y1:y2, :] = 1.0
         
         # Apply bilateral filter to grid regions to smooth artifacts
         # while preserving edges in non-grid areas

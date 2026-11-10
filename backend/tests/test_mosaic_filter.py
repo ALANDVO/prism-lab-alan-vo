@@ -59,11 +59,38 @@ class TestMosaicGridFilter:
         frame = cv2.add(frame, noise)
         
         result = filter.detect_grid(frame)
-        # Should detect grid (though confidence may vary)
-        # At minimum, should not crash
-        assert isinstance(result, GridDetectionResult)
-        assert hasattr(result, 'has_grid')
-        assert hasattr(result, 'confidence')
+        # Should detect the grid
+        assert result.has_grid is True
+        assert result.grid_spacing is not None
+        grid_w, grid_h = result.grid_spacing
+        # Detected spacing should be close to actual (allow some tolerance)
+        assert abs(grid_w - 20) <= 3
+        assert abs(grid_h - 20) <= 3
+        assert result.confidence > 0.15
+
+    def test_filter_frame_suppresses_grid(self):
+        """Test that filter_frame runs and produces valid output."""
+        filter = MosaicGridFilter(grid_threshold=0.1, filter_strength=0.8)
+        # Create frame with strong grid pattern (spacing=20 matches typical VR180)
+        frame = np.zeros((240, 320, 3), dtype=np.uint8)
+        grid_spacing = 20
+        for y in range(0, 240, grid_spacing):
+            frame[y:y+2, :] = [255, 255, 255]
+        for x in range(0, 320, grid_spacing):
+            frame[:, x:x+2] = [255, 255, 255]
+        
+        # Detect grid first
+        detection = filter.detect_grid(frame)
+        assert detection.has_grid is True
+        assert detection.grid_spacing is not None
+        
+        # Apply filter - should not crash
+        filtered = filter.filter_frame(frame, detection)
+        
+        # Output should be valid
+        assert filtered.shape == frame.shape
+        assert filtered.dtype == frame.dtype
+        assert np.all(filtered >= 0) and np.all(filtered <= 255)
 
     def test_filter_frame_no_grid(self):
         """Test filtering frame without grid returns original."""
