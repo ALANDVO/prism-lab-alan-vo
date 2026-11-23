@@ -68,7 +68,7 @@ Tests: `backend/tests/test_mosaic_filter.py`, `backend/tests/test_main.py::TestV
 
 ### ltx-protected-inference — LTX protected inference with fallback
 
-Status: planned
+Status: done
 
 Acceptance:
 - Protected worker loads LTX model safely
