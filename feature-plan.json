@@ -107,7 +107,7 @@
     {
       "id": "ltx-protected-inference",
       "title": "LTX protected inference with fallback",
-      "status": "planned",
+      "status": "done",
       "acceptance": [
         "Protected worker loads LTX model safely",
         "Graceful fallback on protection errors",
