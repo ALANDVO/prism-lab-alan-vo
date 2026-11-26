@@ -119,15 +119,19 @@
     {
       "id": "machine-identity-fallback",
       "title": "Machine identity derivation with OEM fallback",
-      "status": "planned",
+      "status": "done",
       "acceptance": [
-        "Primary: SMBIOS UUID + board/BIOS serial",
-        "Fallback: Windows MachineGuid registry",
-        "Warning instead of hard failure on unsafe identity",
-        "License validation works on OEM machines"
+        "Primary: SMBIOS UUID + board/BIOS serial \u2014 derived from /sys/class/dmi/id/ on Linux",
+        "Fallback: Windows MachineGuid registry \u2014 attempted on Windows platforms",
+        "Warning instead of hard failure on unsafe identity \u2014 logger warning when no identity data available",
+        "License validation works on OEM machines \u2014 available metadata used when primary identity unavailable"
       ],
-      "implementation": [],
-      "tests": []
+      "implementation": [
+        "backend/app/services/machine_identity.py"
+      ],
+      "tests": [
+        "backend/tests/test_machine_identity.py"
+      ]
     }
   ]
 }
