@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "prism-lab-alan-vo"
-version = "1.5.0"
+version = "1.6.0"
 description = "Video restoration tool with AI/ML-powered quality enhancement"
 readme = "README.md"
 license = {text = "MIT"}
